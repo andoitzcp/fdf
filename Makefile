@@ -13,10 +13,16 @@
 #Variables
 
 NAME		= fdf
-INCLUDE		= include
-LIBFT		= libft
-FT_PRINTF	= ft_printf
-MLX			= minilibx-linux
+INCLUDE		= include/
+
+LIBFT		= $(INCLUDE)/libft
+FT_PRINTF	= $(INCLUDE)/ft_printf
+MLX			= $(INCLUDE)/minilibx-linux
+
+LIBFT_A		= libft.a
+FT_PRINTF_A	= ft_printf.a
+MLX_A		= minilibx-Linux.a
+
 SRC_DIR		= src/
 OBJ_DIR		= obj/
 CC			= gcc
@@ -49,19 +55,19 @@ OBJF		=	.cache_exists
 
 all:		$(NAME)
 
-$(NAME):	$(OBJ) $(LIBFT) $(FT_PRINTF) $(MLX)
-			@$(CC) $(CFLAGS) $(OBJ) -L$(LIBFT) -lft -L$(FT_PRINTF) -lftp -L$(MLX) -lmlx -lm -o $(NAME)
+$(NAME):	$(OBJ) $(LIBFT_A) $(FT_PRINTF_A) $(MLX_A)
+			@$(CC) $(CFLAGS) $(OBJ) -L$(LIBFT_A) -lft -L$(FT_PRINTF_A) -lftp -L$(MLX_A) -lmlx -lm -o $(NAME)
 			@echo "$(GREEN)fdf compiled!$(DEF_COLOR)"
 
-$(LIBFT):
+$(LIBFT_A):
 			@$(MAKE) -s -C $(LIBFT)
-			@echo "Compiled $(LIBFT).a"
-$(FT_PRINTF):
+			@echo "Compiled $(LIBFT_A)"
+$(FT_PRINTF_A):
 			@$(MAKE) -s -C $(FT_PRINTF)
-			@echo "Compiled $(FT_PRINTF).a"
-$(MLX):
+			@echo "Compiled $(FT_PRINTF_A)"
+$(MLX_A):
 			@$(MAKE) -s -C $(MLX)
-			@echo "Compiled libmlx_Linux.a"
+			@echo "Compiled $(MLX_A)"
 
 $(OBJ_DIR)%.o: $(SRC_DIR)%.c | $(OBJF)
 			@echo "$(YELLOW)Compiling: $< $(DEF_COLOR)"
@@ -80,11 +86,11 @@ clean:
 fclean:		clean
 			@$(RM) -f $(NAME)
 			@echo "$(CYAN)$(NAME) executable files succesfully cleaned!$(DEF_COLOR)"
-			@$(RM) -f $(LIBFT)/libft.a
+			@$(RM) -f $(LIBFT)/$(LIBFT_A)
 			@echo "$(CYAN)$(LIBFT) executable files succesfully cleaned!$(DEF_COLOR)"
-			@$(RM) -f $(FT_PRINTF)/$(FT_PRINTF).a
+			@$(RM) -f $(FT_PRINTF)/$(FT_PRINTF_A)
 			@echo "$(CYAN)$(FT_PRINTF) executable files succesfully cleaned!$(DEF_COLOR)"
-			@$(RM) -f $(MLX)/libmlx_Linux.a
+			@$(RM) -f $(MLX)/$(MLX_A)
 			@echo "$(CYAN)$(MLX) executable files succesfully cleaned!$(DEF_COLOR)"
 
 re:			fclean all
