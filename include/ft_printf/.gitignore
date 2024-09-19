@@ -1,0 +1,6 @@
+./obj
+./test
+libftprintf.a
+a.out
+*.o
+test0.c

@@ -97,61 +97,47 @@ void ft_link_point(t_node *p, void *mlx, void *win)
     ft_print_vector(mlx, win, p, p->r);
 }
 
-t_node *ft_defpoint(int x, int y, int z)
+t_node *ft_defpoint(int x, int y)
 {
     t_node *p;
 
     p = (t_node *)malloc(sizeof(t_node));
     p->x = x;
     p->y = y;
-    p->z = z;
+    p->z = 0;
     p->is_printed = 0;
     return (p);
-}
-
-void ft_printpointinfo(t_node *p)
-{
-    static int i = 0;
-
-    printf("P: %d\tx: %d\ty: %d\tz: %d\n", i, p->x, p->y, p->z);
-    i++;
 }
 
 int main(void)
 {
     void *mlx;
     void *win;
-    //int node_dist;
-    t_node **matrix;
-    int i;
-    int j;
-    int k;
+    t_node *a;
+    t_node *b;
+    t_node *c;
+    t_node *d;
+    t_node *e;
+    //:int node_dist;
 
     mlx = mlx_init();
     win = mlx_new_window(mlx, SCRN_WIDTH, SCRN_HEIGH, "Testing");
+    //ft_print_square(mlx, win, 0x00FF0000);
     ft_print_limits(mlx, win, 0x00FF0000);
     //node_dist = SCRN_WIDTH / 50;
-    matrix = (t_node **)malloc(50 * 50 * sizeof(t_node *));
-    k = 0;
-    i = 0;
-    while (i < 50)
-    {
-        j = 0;
-        while (j < 50)
-        {
-            matrix[k] = ft_defpoint(j, i, 0);
-            k++;
-            j++;
-        }
-        i++;
-    }
-    k = 0;
-    while (k < 2500)
-    {
-        ft_printpointinfo(matrix[k]);
-        k++;
-    }
-    //ft_link_point(a, mlx, win);
+    //ft_print_square(mlx, win, 0x000000FF);
+    //ft_print_square(mlx, win, 0x000000FF);
+    //ft_print_axis(mlx, win, 0x000000FF);
+    a = ft_defpoint(700, 500);
+    b = ft_defpoint(100, 500);
+    c = ft_defpoint(1500, 600);
+    d = ft_defpoint(500, 100);
+    e = ft_defpoint(400, 900);
+    a->l = b;
+    a->r = c;
+    a->u = d;
+    a->d = e;
+    ft_link_point(a, mlx, win);
     mlx_loop(mlx);
 
     return (0);
