@@ -15,6 +15,8 @@
 # define FT_FDF_H
 
 # include <math.h>
+# include <fcntl.h>
+# include <unistd.h>
 # include "../include/minilibx-linux/mlx.h"
 # include "../include/libft/libft.h"
 # include "../include/ft_printf/src/ft_printf.h"
@@ -27,11 +29,20 @@ typedef struct s_node
     int x;
     int y;
     int z;
+    int c;
     char is_printed;
     struct s_node *u;
     struct s_node *d;
     struct s_node *l;
     struct s_node *r;
 } t_node;
+
+t_node *ft_defpoint(int x, int y, char *param);
+void ft_storeline(t_node **head, char **params);
+void ft_parsefile(char *s);
+
+void db_printpoint(t_node *p);
+void db_printline(t_node *p);
+void db_printmatrix(t_node **head);
 
 #endif

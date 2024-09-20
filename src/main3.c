@@ -73,18 +73,35 @@ t_node *ft_defpoint(int x, int y, char *param)
     return (p);
 }
 
-int main(int argc, char **argv)
+int main(void)
 {
     void *mlx;
     void *win;
     //int node_dist;
+    t_node **matrix;
+    int i;
+    int j;
+    int k;
 
-    if (argc != 2)
-        return (1);
     mlx = mlx_init();
     win = mlx_new_window(mlx, SCRN_WIDTH, SCRN_HEIGH, "Testing");
     ft_print_limits(mlx, win, 0x00FF0000);
-    ft_parsefile(argv[1]);
+    //node_dist = SCRN_WIDTH / 50;
+    matrix = (t_node **)malloc(50 * 50 * sizeof(t_node *));
+    k = 0;
+    i = 0;
+    while (i < 50)
+    {
+        j = 0;
+        while (j < 50)
+        {
+            matrix[k] = ft_defpoint(j, i, 0);
+            k++;
+            j++;
+        }
+        i++;
+    }
+    k = 0;
     //ft_link_point(a, mlx, win);
     mlx_loop(mlx);
 
