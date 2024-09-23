@@ -45,10 +45,17 @@ typedef struct s_params
     double angle;
 } t_params;
 
+// File parsing
 t_node *ft_defpoint(int x, int y, char *param);
 void *ft_storeline(t_node **head, char **params);
 t_node **ft_parsefile(char *s);
 
+// Pixel printing
+void ft_print_vector(void *mlx, void *win, t_node *a, t_node *b);
+void ft_link_point(t_node *p, void *mlx, void *win);
+void printgrid(t_node **head, void *mlx, void *win);
+
+// Console debugging
 void db_printpoint(t_node *p);
 void db_printtest(t_node *p);
 void db_printline(t_node *p);
