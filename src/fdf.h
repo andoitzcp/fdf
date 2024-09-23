@@ -23,6 +23,8 @@
 
 # define SCRN_WIDTH 1920
 # define SCRN_HEIGH 1920
+# define MIN_COLOR 0x00FFFFFF
+# define MAX_COLOR 0x000000FF
 
 typedef struct s_node
 {

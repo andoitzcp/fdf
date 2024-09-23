@@ -28,6 +28,7 @@ void ft_print_vector(void *mlx, void *win, t_node *a, t_node *b)
     double c;
     int x;
     int y;
+    int z;
 
     mod = (int)hypot(a->x - b->x, a->y - b->y);
     c = (double)(b->x - a->x) / mod;
@@ -37,17 +38,23 @@ void ft_print_vector(void *mlx, void *win, t_node *a, t_node *b)
     {
         x = (int)(i * c + a->x);
         y = (int)(i * s + a->y);
-        mlx_pixel_put(mlx, win, x, y, 0x00FF0000);
+        z = b->c + i * (b->c - a->c) / mod;
+        mlx_pixel_put(mlx, win, x, y, z);
         i++;
     }
 }
 
 void ft_link_point(t_node *p, void *mlx, void *win)
 {
-    ft_print_vector(mlx, win, p, p->u);
-    ft_print_vector(mlx, win, p, p->d);
-    ft_print_vector(mlx, win, p, p->l);
-    ft_print_vector(mlx, win, p, p->r);
+    if (p->u && p->is_printed == 0)
+        ft_print_vector(mlx, win, p, p->u);
+    if (p->d && p->is_printed == 0)
+        ft_print_vector(mlx, win, p, p->d);
+    if (p->l && p->is_printed == 0)
+        ft_print_vector(mlx, win, p, p->l);
+    if (p->r && p->is_printed == 0)
+        ft_print_vector(mlx, win, p, p->r);
+    p->is_printed = 1;
 }
 
 t_node *ft_defpoint(int x, int y, char *param)
@@ -65,6 +72,7 @@ t_node *ft_defpoint(int x, int y, char *param)
     p->x = x;
     p->y = y;
     p->z = ft_atoi(handc[0]);
+    p->c = MIN_COLOR + p->z * (MAX_COLOR - MIN_COLOR) / 255;
     //p->c = ft_atoi(handc[1]); falta crear funcion xtoi
     p->is_printed = 0;
     p->u = NULL;
@@ -75,8 +83,16 @@ t_node *ft_defpoint(int x, int y, char *param)
 
 t_node *ft_relocpoint(t_node *p, t_params *par)
 {
-    p->x = p->x * par->module * cos(par->angle) + SCRN_WIDTH;
-    p->y = p->y * par->module * sin(par->angle) + SCRN_HEIGH + p->z;
+    double isox;
+    double isoy;
+
+    isox = (double)p->x;
+    isoy = (double)p->y;
+
+    p->x = ((isox - isoy) / 1.5) * par->module;
+    p->y = (isox / 3 + isoy / 1.5) * par->module;
+    p->x += SCRN_WIDTH / 2;
+    p->y += SCRN_HEIGH / 2 - p->z;
     return (p);
 }
 
@@ -102,10 +118,11 @@ t_node **ft_resetgrid(t_node **head, t_params *par)
         j++;
     }
     if (j > i)
-        par->module = SCRN_HEIGH / j;
+        par->module = SCRN_HEIGH / j / 2;
     else
-        par->module = SCRN_WIDTH / i;
+        par->module = SCRN_WIDTH / i / 2;
     par->angle = (double)M_PI_4 / 3;
+    p = *head;
     while (p)
     {
         tmp = p;
@@ -117,6 +134,25 @@ t_node **ft_resetgrid(t_node **head, t_params *par)
         p = p->d;
     }
     return (head);
+}
+
+void printgrid(t_node **head, void *mlx, void *win)
+{
+    t_node *p;
+    t_node *tmp;
+
+    p = *head;
+    while (p)
+    {
+        tmp = p;
+        while (tmp)
+        {
+            ft_link_point(tmp, mlx, win);
+            db_printpoint(tmp);
+            tmp = tmp->r;
+        }
+        p = p->d;
+    }
 }
 
 int main(int argc, char **argv)
@@ -135,9 +171,10 @@ int main(int argc, char **argv)
     head = ft_parsefile(argv[1]);
     par = (t_params *)malloc(sizeof(t_params));
     head = ft_resetgrid(head, par);
-    db_printmatrix(head);
+    //db_printmatrix(head);
+    printgrid(head, mlx, win);
     //ft_link_point(a, mlx, win);
-    //mlx_loop(mlx);
+    mlx_loop(mlx);
 
     return (0);
 }

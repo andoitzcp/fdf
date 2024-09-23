@@ -91,7 +91,6 @@ t_node **ft_parsefile(char *s)
         free(sline);
         sline = ft_gnl(fd);
     }
-    db_printmatrix(head);
     close(fd);
     return head;
 }
