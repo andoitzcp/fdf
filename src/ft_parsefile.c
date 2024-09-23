@@ -65,7 +65,7 @@ void *ft_storeline(t_node **head, char **params)
     return (head);
 }
 
-void ft_parsefile(char *s)
+t_node **ft_parsefile(char *s)
 {
     int fd;
     char *sline;
@@ -93,4 +93,5 @@ void ft_parsefile(char *s)
     }
     db_printmatrix(head);
     close(fd);
+    return head;
 }

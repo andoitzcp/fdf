@@ -73,10 +73,58 @@ t_node *ft_defpoint(int x, int y, char *param)
     return (p);
 }
 
+t_node *ft_relocpoint(t_node *p, t_params *par)
+{
+    p->x = p->x * par->module * cos(par->angle) + SCRN_WIDTH;
+    p->y = p->y * par->module * sin(par->angle) + SCRN_HEIGH + p->z;
+    return (p);
+}
+
+t_node **ft_resetgrid(t_node **head, t_params *par)
+{
+    int i;
+    int j;
+    t_node *p;
+    t_node *tmp;
+
+    p = *head;
+    i = 0;
+    while (p)
+    {
+        p = p->r;
+        i++;
+    }
+    p = *head;
+    j = 0;
+    while (p)
+    {
+        p = p->d;
+        j++;
+    }
+    if (j > i)
+        par->module = SCRN_HEIGH / j;
+    else
+        par->module = SCRN_WIDTH / i;
+    par->angle = (double)M_PI_4 / 3;
+    while (p)
+    {
+        tmp = p;
+        while (tmp)
+        {
+            tmp = ft_relocpoint(tmp, par);
+            tmp = tmp->r;
+        }
+        p = p->d;
+    }
+    return (head);
+}
+
 int main(int argc, char **argv)
 {
     void *mlx;
     void *win;
+    t_node **head;
+    t_params *par;
     //int node_dist;
 
     if (argc != 2)
@@ -84,7 +132,10 @@ int main(int argc, char **argv)
     mlx = mlx_init();
     win = mlx_new_window(mlx, SCRN_WIDTH, SCRN_HEIGH, "Testing");
     ft_print_limits(mlx, win, 0x00FF0000);
-    ft_parsefile(argv[1]);
+    head = ft_parsefile(argv[1]);
+    par = (t_params *)malloc(sizeof(t_params));
+    head = ft_resetgrid(head, par);
+    db_printmatrix(head);
     //ft_link_point(a, mlx, win);
     //mlx_loop(mlx);
 
