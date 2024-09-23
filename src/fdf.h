@@ -38,11 +38,13 @@ typedef struct s_node
 } t_node;
 
 t_node *ft_defpoint(int x, int y, char *param);
-void ft_storeline(t_node **head, char **params);
+void *ft_storeline(t_node **head, char **params);
 void ft_parsefile(char *s);
 
 void db_printpoint(t_node *p);
+void db_printtest(t_node *p);
 void db_printline(t_node *p);
 void db_printmatrix(t_node **head);
+void db_printparams(char **params);
 
 #endif

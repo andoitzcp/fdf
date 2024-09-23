@@ -4,32 +4,49 @@ void db_printpoint(t_node *p)
 {
     static int i = 0;
 
-    ft_printf("Node #%d:\n", i);
-    ft_printf("\tx:%d,\ty:%d,\tz:%d,\tc:%x\n", p->x, p->y, p->z, p->c);
-    ft_printf("\tup:\t%p\n", p->u);
-    ft_printf("\tdown:\t%p\n", p->d);
-    ft_printf("\tleft:\t%p\n", p->l);
-    ft_printf("\tright:\t%p\n", p->r);
+    printf("Node #%d: %p\n", i, p);
+    printf("\tx:%d,\ty:%d,\tz:%d,\tc:%x\n", p->x, p->y, p->z, p->c);
+    printf("\tup:\t%p\n", p->u);
+    printf("\tdown:\t%p\n", p->d);
+    printf("\tleft:\t%p\n", p->l);
+    printf("\tright:\t%p\n", p->r);
     i++;
 }
 
 void db_printline(t_node *p)
 {
-    while (p)
+    t_node *tmp;
+
+    tmp = p;
+    while (tmp)
     {
-        db_printpoint(p);
-        p = p->r;
+        db_printpoint(tmp);
+        tmp = tmp->r;
     }
 }
 
 void db_printmatrix(t_node **head)
 {
     t_node *p;
+    t_node *tmp;
 
-    p = *head;
-    while (p)
+    tmp = *head;
+    while (tmp)
     {
+        p = tmp;
         db_printline(p);
-        p = p->d;
+        tmp = tmp->d;
+    }
+}
+
+void db_printparams(char **params)
+{
+    int i;
+
+    i = 0;
+    while (params[i])
+    {
+        printf("p[%d]: %s\n", i, params[i]);
+        i++;
     }
 }

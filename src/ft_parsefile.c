@@ -1,38 +1,68 @@
 #include "fdf.h"
 
-void ft_storeline(t_node **head, char **params)
+void *ft_buildline(char **params, int j)
 {
     int i;
-    int j;
-    t_node *p;
     void *tmp;
+    t_node *p;
 
-    p = *head;
     i = 0;
-    j = 0;
-    printf("flag10:p: %p\n", p);
-    while (p)
+    p = ft_defpoint(i, j, params[i]);
+    //printf("flag21\n");
+    p->l = NULL;
+    //db_printpoint(p);
+    while (params[++i])
     {
-        p = p->d;
-        j++;
-        printf("flag10.1:p: %p\tj:%d\n", p, j);
-    }
-    //p->l = NULL;
-    printf("flag11:p: %p\n", p);
-    tmp = NULL;
-    while (params[i])
-    {
-        printf("flag11.1:i: %d\n", i);
+        //printf("flag21.1\n");
+        //i++;
+        tmp = p;
+        p = p->r;
         p = ft_defpoint(i, j, params[i]);
         p->l = tmp;
-        printf("flag11.2:p: %p\n", p);
-        tmp = p;
-        printf("flag11.3:p: %p\n", p);
-        p = p->r;
-        printf("flag11.4:p: %p\n", p);
-        printf("flag11.5:p: %p\n", p);
-        i++;
+        //db_printpoint(p);
     }
+    //printf("flag22\n");
+    while (p->l)
+    {
+        //printf("flag22.1\n");
+        //db_printpoint(p);
+        tmp = p;
+        p = p->l;
+        p->r = tmp;
+    }
+    //printf("flag23\n");
+    //db_printpoint(p);
+    return (p);
+}
+
+void *ft_storeline(t_node **head, char **params)
+{
+    int j;
+    t_node *p;
+    t_node *tmp;
+
+    if (!*head)
+    {
+        *head = ft_buildline(params, 0);
+        return (head);
+    }
+    p = *head;
+    j = 0;
+    while (p)
+    {
+        tmp = p;
+        p = p->d;
+        j++;
+    }
+    p = ft_buildline(params, j);
+    while (p && tmp)
+    {
+        p->u = tmp;
+        tmp->d = p;
+        p = p->r;
+        tmp = tmp->r;
+    }
+    return (head);
 }
 
 void ft_parsefile(char *s)
@@ -42,29 +72,23 @@ void ft_parsefile(char *s)
     t_node **head;
 
     fd = open(s, O_RDONLY);
-    printf("flag00:fd: %d name: %s\n", fd, s);
     if (!fd)
     {
         perror("Could not open data file\n");
         abort();
     }
     head = (t_node **)malloc(sizeof(t_node **));
-    printf("flag01:head: %p\n", head);
     if (!head)
     {
         perror("Could not allocate header pointer");
         abort();
     }
     *head = NULL;
-    printf("flag02:*head: %p\n", *head);
     sline = ft_gnl(fd);
-    printf("flag03:sline: %p\n", sline);
     while (sline != NULL)
     {
-        printf("flag04:sline: %s\n", sline);
-        ft_storeline(head, ft_split(sline, ' '));
+        head = ft_storeline(head, ft_split(sline, ' '));
         free(sline);
-        printf("flag05\n");
         sline = ft_gnl(fd);
     }
     db_printmatrix(head);

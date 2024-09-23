@@ -86,7 +86,7 @@ int main(int argc, char **argv)
     ft_print_limits(mlx, win, 0x00FF0000);
     ft_parsefile(argv[1]);
     //ft_link_point(a, mlx, win);
-    mlx_loop(mlx);
+    //mlx_loop(mlx);
 
     return (0);
 }
