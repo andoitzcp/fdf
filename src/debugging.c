@@ -6,6 +6,7 @@ void db_printpoint(t_node *p)
 
     printf("Node #%d: %p\n", i, p);
     printf("\tx:%d,\ty:%d,\tz:%d,\tc:%x\n", p->x, p->y, p->z, p->c);
+    printf("\tcarx:%d,\tcary:%d\n", p->carx, p->cary);
     printf("\tup:\t%p\n", p->u);
     printf("\tdown:\t%p\n", p->d);
     printf("\tleft:\t%p\n", p->l);

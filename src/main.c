@@ -19,109 +19,109 @@ void ft_print_limits(void *mlx, void* win, int color)
         mlx_pixel_put(mlx, win, i, 1860, color);
 }
 
-
-
-
-t_node *ft_defpoint(int x, int y, char *param)
+void ft_freegrid(t_node **head)
 {
-    t_node *p;
-    char **handc;
-
-    p = (t_node *)malloc(sizeof(t_node));
-    if (!p)
-    {
-        perror("Could not allocate node pointer\n");
-        abort();
-    }
-    handc = ft_split(param, ',');
-    p->x = x;
-    p->y = y;
-    p->z = ft_atoi(handc[0]);
-    p->c = MIN_COLOR + p->z * (MAX_COLOR - MIN_COLOR) / 255;
-    //p->c = ft_atoi(handc[1]); falta crear funcion xtoi
-    p->is_printed = 0;
-    p->u = NULL;
-    p->d = NULL;
-    p->r = NULL;
-    return (p);
-}
-
-t_node *ft_relocpoint(t_node *p, t_params *par)
-{
-    double isox;
-    double isoy;
-
-    isox = (double)p->x;
-    isoy = (double)p->y;
-
-    p->x = ((isox - isoy) / 1.5) * par->module;
-    p->y = (isox / 3 + isoy / 1.5) * par->module;
-    p->x += SCRN_WIDTH / 2;
-    p->y += SCRN_HEIGH / 3 - p->z;
-    return (p);
-}
-
-t_node **ft_resetgrid(t_node **head, t_params *par)
-{
-    int i;
-    int j;
     t_node *p;
     t_node *tmp;
 
     p = *head;
-    i = 0;
-    while (p)
-    {
-        p = p->r;
-        i++;
-    }
-    p = *head;
-    j = 0;
-    while (p)
-    {
-        p = p->d;
-        j++;
-    }
-    if (j > i)
-        par->module = SCRN_HEIGH / j / 2;
-    else
-        par->module = SCRN_WIDTH / i / 2;
-    par->angle = (double)M_PI_4 / 3;
-    p = *head;
     while (p)
     {
         tmp = p;
-        while (tmp)
-        {
-            tmp = ft_relocpoint(tmp, par);
-            tmp = tmp->r;
-        }
         p = p->d;
+        while (tmp->r)
+        {
+            tmp = tmp->r;
+            free(tmp->l);
+        }
+        free(tmp);
     }
-    return (head);
+    free(head);
+}
+
+void ft_resize(t_var *var, int xmov, int ymov, int rsize)
+{
+    var->par->xoffset = var->par->xoffset + xmov;
+    var->par->yoffset = var->par->yoffset + ymov;
+    var->par->width = var->par->width + rsize;
+    ft_recalcgrid(var->head, var->par);
+    mlx_clear_window(var->mlx, var->win);
+    printf("here1\n");
+    if (var->canvas_mode == 1 && var->img.img)
+    {
+        printf("here2\n");
+        mlx_destroy_image(var->mlx, var->img.img);
+        printf("here3\n");
+        var->img.img = mlx_new_image(var->mlx, SCRN_WIDTH, SCRN_HEIGH);
+        printf("here4\n");
+    }
+    printf("here5\n");
+    printgrid(var->head, var);
+    printf("here6\n");
+}
+
+int ft_close(t_var *var)
+{
+    mlx_destroy_window(var->mlx, var->win);
+    ft_freegrid(var->head);
+    mlx_loop_end(var->mlx);
+    mlx_destroy_display(var->mlx);
+    free(var->par);
+    free(var->mlx);
+    exit(0);
+}
+
+int ft_keyhook(int keycode, t_var *var)
+{
+    printf("%d\n", keycode);
+    if (keycode == 99)
+    {
+        if (var->canvas_mode == 0)
+            var->canvas_mode = 1;
+        else
+            var->canvas_mode = 0;
+    }
+    else if (keycode == 104)
+        ft_resize(var, -50, 0, 0);
+    else if (keycode == 106)
+        ft_resize(var, 0, 50, 0);
+    else if (keycode == 107)
+        ft_resize(var, 0, -50, 0);
+    else if (keycode == 108)
+        ft_resize(var, +50, 0, 0);
+    else if (keycode == 117)
+        ft_resize(var, 0, 0, 50);
+    else if (keycode == 109)
+        ft_resize(var, 0, 0, -50);
+    else if (keycode == 65307)
+    {
+        ft_close(var);
+    }
+    return (0);
 }
 
 
 int main(int argc, char **argv)
 {
-    void *mlx;
-    void *win;
-    t_node **head;
-    t_params *par;
-    //int node_dist;
+    t_var var;
 
     if (argc != 2)
         return (1);
-    mlx = mlx_init();
-    win = mlx_new_window(mlx, SCRN_WIDTH, SCRN_HEIGH, "Testing");
-    ft_print_limits(mlx, win, 0x00FF0000);
-    head = ft_parsefile(argv[1]);
-    par = (t_params *)malloc(sizeof(t_params));
-    head = ft_resetgrid(head, par);
-    //db_printmatrix(head);
-    printgrid(head, mlx, win);
-    //ft_link_point(a, mlx, win);
-    mlx_loop(mlx);
+    var.mlx = mlx_init();
+    var.win = mlx_new_window(var.mlx, SCRN_WIDTH, SCRN_HEIGH, "FdF");
+    var.img.img = mlx_new_image(var.mlx, SCRN_WIDTH, SCRN_HEIGH);
+    var.img.addr = mlx_get_data_addr(var.img.img, &var.img.bits_per_pixel, &var.img.line_length, &var.img.endian);
+    ft_print_limits(var.mlx, var.win, 0x00FF0000);
+    var.canvas_mode = 0;
+    var.head = ft_parsefile(argv[1]);
+    //db_printmatrix(var.head);
+    var.par = ft_setinitparams(var.head);
+    var.head = ft_recalcgrid(var.head, var.par);
+    db_printmatrix(var.head);
+    printgrid(var.head, &var);
+    mlx_hook(var.win, 17, 0, ft_close, &var);
+    mlx_hook(var.win, 2, 1L<<0, ft_keyhook, &var);
+    mlx_loop(var.mlx);
 
     return (0);
 }

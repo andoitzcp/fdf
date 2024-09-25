@@ -23,6 +23,7 @@ LIBFT_A		= $(addprefix $(LIBFT), libft.a)
 FT_PRINTF_A	= $(addprefix $(FT_PRINTF), libftprintf.a)
 MLX_A		= $(addprefix $(MLX), minilibx-Linux.a)
 
+HEADERS     = src/fdf.h
 SRC_DIR		= src/
 OBJ_DIR		= obj/
 CC			= gcc
@@ -43,7 +44,7 @@ WHITE = \033[0;97m
 
 #Sources
 
-SRC_FILES	=	main ft_parsefile pixel_printing debugging
+SRC_FILES	=	main ft_parsefile pixel_printing debugging point_manipulation
 
 
 SRC 		= 	$(addprefix $(SRC_DIR), $(addsuffix .c, $(SRC_FILES)))
@@ -55,7 +56,7 @@ OBJF		=	.cache_exists
 
 all:		$(NAME)
 
-$(NAME):	$(OBJ) $(LIBFT_A) $(FT_PRINTF_A) $(MLX_A)
+$(NAME):	$(OBJ) $(LIBFT_A) $(FT_PRINTF_A) $(MLX_A) $(HEADERS)
 			@$(CC) $(CFLAGS) $(OBJ) -L$(LIBFT) -lft -L$(FT_PRINTF) -lftprintf -L$(MLX) -lmlx -lm -o $(NAME) -lXext -lX11
 			@echo "$(GREEN)fdf compiled!$(DEF_COLOR)"
 

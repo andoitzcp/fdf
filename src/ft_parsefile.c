@@ -8,34 +8,25 @@ void *ft_buildline(char **params, int j)
 
     i = 0;
     p = ft_defpoint(i, j, params[i]);
-    //printf("flag21\n");
     p->l = NULL;
-    //db_printpoint(p);
     while (params[++i])
     {
-        //printf("flag21.1\n");
-        //i++;
         tmp = p;
         p = p->r;
         p = ft_defpoint(i, j, params[i]);
         p->l = tmp;
-        //db_printpoint(p);
     }
-    //printf("flag22\n");
+    ft_free2parray(params);
     while (p->l)
     {
-        //printf("flag22.1\n");
-        //db_printpoint(p);
         tmp = p;
         p = p->l;
         p->r = tmp;
     }
-    //printf("flag23\n");
-    //db_printpoint(p);
     return (p);
 }
 
-void *ft_storeline(t_node **head, char **params)
+void ft_storeline(t_node **head, char **params)
 {
     int j;
     t_node *p;
@@ -44,7 +35,7 @@ void *ft_storeline(t_node **head, char **params)
     if (!*head)
     {
         *head = ft_buildline(params, 0);
-        return (head);
+        return;
     }
     p = *head;
     j = 0;
@@ -62,7 +53,6 @@ void *ft_storeline(t_node **head, char **params)
         p = p->r;
         tmp = tmp->r;
     }
-    return (head);
 }
 
 t_node **ft_parsefile(char *s)
@@ -87,10 +77,10 @@ t_node **ft_parsefile(char *s)
     sline = ft_gnl(fd);
     while (sline != NULL)
     {
-        head = ft_storeline(head, ft_split(sline, ' '));
+        ft_storeline(head, ft_split(sline, ' '));
         free(sline);
         sline = ft_gnl(fd);
     }
     close(fd);
-    return head;
+    return (head);
 }
