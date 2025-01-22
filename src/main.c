@@ -114,7 +114,6 @@ int main(int argc, char **argv)
     ft_print_limits(var.mlx, var.win, 0x00FF0000);
     var.canvas_mode = 0;
     var.head = ft_parsefile(argv[1]);
-    //db_printmatrix(var.head);
     var.par = ft_setinitparams(var.head);
     var.head = ft_recalcgrid(var.head, var.par);
     db_printmatrix(var.head);
