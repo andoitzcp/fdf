@@ -6,7 +6,7 @@
 /*   By: andoitzcp <andoitzcp@gmail.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 01:47:08 by andoitzcp         #+#    #+#             */
-/*   Updated: 2025/02/14 02:00:18 by andoitzcp   ########  ###                */
+/*   Updated: 2025/02/14 02:37:34 by andoitzcp   ########  ###                */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ static int	ft_checkinput(char *hex)
 		return (0);
 	if (ft_tolower(hex[0]) != '0' && ft_tolower(hex[1]) != 'x')
 		return (perror("Not a valid hexadecimal string"), 0);
+	return (1);
 }
 
 int	ft_xtoi(char *hex)
@@ -27,9 +28,9 @@ int	ft_xtoi(char *hex)
 	int		x;
 	char	base[17];
 
-	if (ft_checkinput == 0)
+	if (ft_checkinput(hex) == 0)
 		return (0);
-	memcpy(base, "0123456789abcdef", 17);
+	ft_memcpy(base, "0123456789abcdef", 17);
 	i = 2;
 	x = 0;
 	while (hex[i] != '\0')
