@@ -44,7 +44,7 @@ WHITE = \033[0;97m
 
 #Sources
 
-SRC_FILES	=	main ft_parsefile pixel_printing debugging point_manipulation
+SRC_FILES	=	main ft_parsefile pixel_printing point_manipulation
 
 
 SRC 		= 	$(addprefix $(SRC_DIR), $(addsuffix .c, $(SRC_FILES)))

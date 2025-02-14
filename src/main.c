@@ -49,6 +49,8 @@ void	ft_resize(t_var *var, int xmov, int ymov, int rsize)
 
 int	ft_close(t_var *var)
 {
+	if (var->img.img != NULL)
+		mlx_destroy_image(var->mlx, var->img.img);
 	mlx_destroy_window(var->mlx, var->win);
 	ft_freegrid(var->head);
 	mlx_loop_end(var->mlx);
@@ -101,7 +103,6 @@ int	main(int argc, char **argv)
 	var.head = ft_parsefile(argv[1]);
 	var.par = ft_setinitparams(var.head);
 	var.head = ft_recalcgrid(var.head, var.par);
-	db_printmatrix(var.head);
 	printgrid(var.head, &var);
 	mlx_hook(var.win, 17, 0, ft_close, &var);
 	mlx_hook(var.win, 2, 1L << 0, ft_keyhook, &var);
