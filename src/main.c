@@ -92,6 +92,9 @@ int	main(int argc, char **argv)
 
 	if (argc != 2)
 		return (1);
+	var.head = ft_parsefile(argv[1]);
+	if (var.head == NULL)
+		return (1);
 	var.mlx = mlx_init();
 	var.win = mlx_new_window(var.mlx, SCRN_WIDTH, SCRN_HEIGH, "FdF");
 	var.img.img = mlx_new_image(var.mlx, SCRN_WIDTH, SCRN_HEIGH);
@@ -100,7 +103,6 @@ int	main(int argc, char **argv)
 			&var.img.line_length,
 			&var.img.endian);
 	var.canvas_mode = 0;
-	var.head = ft_parsefile(argv[1]);
 	var.par = ft_setinitparams(var.head);
 	var.head = ft_recalcgrid(var.head, var.par);
 	printgrid(var.head, &var);

@@ -87,16 +87,16 @@ t_node	**ft_parsefile(char *s)
 	t_node	**head;
 
 	fd = open(s, O_RDONLY);
-	if (!fd)
+	if (fd == -1)
 	{
 		perror("Could not open data file\n");
-		exit (1);
+		return (NULL);
 	}
 	head = (t_node **)malloc(sizeof(t_node **));
 	if (!head)
 	{
 		perror("Could not allocate header pointer");
-		exit (1);
+		return (NULL);
 	}
 	ft_readfile(fd, head);
 	close(fd);
