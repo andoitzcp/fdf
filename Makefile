@@ -1,12 +1,12 @@
 # **************************************************************************** #
 #                                                                              #
 #                                                         :::      ::::::::    #
-#    Makefile                                        :+:    :+: :+:    :+:     #
+#    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
 #    By: acampo-p <acampo-p@student.42urduli>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/19 09:35:35 by acampo-p          #+#    #+#              #
-#    Updated: 2025/02/14 02:34:27 by andoitzcp   ########  ###                 #
+#    Updated: 2025/02/17 08:39:08 by acampo-p@        ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,7 @@ INCLUDE		= include/
 
 LIBFT		= $(addprefix $(INCLUDE), libft/)
 FT_PRINTF	= $(addprefix $(INCLUDE), ft_printf/)
-MLX			= $(addprefix $(INCLUDE), minilibx-linux/)
+MLX			= ~/minilibx-linux/
 
 LIBFT_A		= $(addprefix $(LIBFT), libft.a)
 FT_PRINTF_A	= $(addprefix $(FT_PRINTF), libftprintf.a)

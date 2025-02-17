@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   fdf.h                                           :+:    :+: :+:    :+:    */
+/*   fdf.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: andoitzcp <andoitzcp@gmail.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 00:44:35 by andoitzcp         #+#    #+#             */
-/*   Updated: 2025/02/14 01:39:31 by andoitzcp   ########  ###                */
+/*   Updated: 2025/02/17 08:41:15 by acampo-p@        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 # include <math.h>
 # include <fcntl.h>
 # include <unistd.h>
-# include "../include/minilibx-linux/mlx.h"
+# include "/home/acampo-p/minilibx-linux/mlx.h"
 # include "../include/libft/libft.h"
 # include "../include/ft_printf/src/ft_printf.h"
 
