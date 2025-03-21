@@ -17,7 +17,7 @@ INCLUDE		= include/
 
 LIBFT		= $(addprefix $(INCLUDE), libft/)
 FT_PRINTF	= $(addprefix $(INCLUDE), ft_printf/)
-MLX			= $(addprefix $(INCLUDE), minilibx-linux/)
+MLX			= $(addprefix "./../", minilibx-linux/)
 
 LIBFT_A		= $(addprefix $(LIBFT), libft.a)
 FT_PRINTF_A	= $(addprefix $(FT_PRINTF), libftprintf.a)
@@ -66,7 +66,7 @@ $(LIBFT_A):
 $(FT_PRINTF_A):
 			@$(MAKE) -s -C $(FT_PRINTF)
 			@echo "Compiled $(FT_PRINTF_A)"
-$(MLX_A):
+$(MLX_A):   foo
 			@$(MAKE) -s -C $(MLX)
 			@echo "Compiled $(MLX_A)"
 
@@ -93,11 +93,15 @@ fclean:		clean
 			@echo "$(CYAN)$(FT_PRINTF) executable files succesfully cleaned!$(DEF_COLOR)"
 			@$(RM) -f $(MLX)/$(MLX_A)
 			@echo "$(CYAN)$(MLX) executable files succesfully cleaned!$(DEF_COLOR)"
+			@rm -rf $(MLX)
+			@echo "$(CYAN)$(MLX) repository deleted!$(DEF_COLOR)"
 
 re:			fclean all
 			@echo "$(GREEN)Everything was cleaned and the rebuilt for ft_printf!$(DEF_COLOR)"
 
 norm:
 			@norminette $(SRC) $(INCLUDE) $(LIBFT) $(FT_PRINTF) | grep -v Norme -B1 || true
+foo:
+			if [ -d $(MLX) ]; then echo "mlx is alredy cloned"; else git clone https://github.com/42Paris/minilibx-linux $(MLX); fi
 
-.PHONY:		all clean fclean re norm
+.PHONY:		all clean fclean re norm foo
